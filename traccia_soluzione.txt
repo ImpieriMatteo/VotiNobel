@@ -1,0 +1,64 @@
+INPUT:
+	- Insieme di Esame (PARTENZA)
+	- # crediti (m)
+	
+OUTPUT: 
+ 	- Insieme (set) di Esame, sottoinsieme di PARTENZA,
+ 		* somma Esame.crediti() == m
+ 		* media Esame.voto() sia MAX
+ 		
+APPROCCIO 1 (il più "stupido")
+
+Ad ogni livello (L) della ricorsione, aggiungo un esame -> devo decidere quale, li provo tutti (come per l'algoritmo per gli anagrammi)
+
+-SOLUZIONE PARZIALE 
+	PARZIALE = sottoinsieme di esattamente L elementi
+
+-GENERAZIONE SOLUZIONE PARZIALE 
+	per tutti i casi che non ho ancora considerato (tutti gli esami non ancora compresi in PARZIALE):
+		* provo ad aggiungere 	
+		* faccio andare avanti la ricorsione
+		* faccio backtracking
+		
+	L = 0 -> ho N scelte possibili
+		PARZIALE = {e1}
+			L = 1 
+				PARZIALE = {e1, e2}
+				PARZIALE = {e1, e3}
+				[...]
+		PARZIALE = {e2}
+				PARZIALE = {e2, e1}
+				PARZIALE = {e2, e3}
+				[...]
+		[...]
+		PARZIALE = {en}
+		
+- CASI TERMINALI
+
+	L = PARTENZA.size() -> non ci sono più esami da aggiungere
+	Controllo soluzione parziale: 
+		* se PARZIALE.sommaCrediti() == m
+			- se PARZIALE.media() > di tutte le medie viste fino ad ora -> tengo traccia di PARZIALE
+		* se PARZIALE.sommaCrediti() != m
+			- abbandono la ricorsione
+		
+	PARZIALE.sommaCrediti() >= m -> mi fermo subito!
+		* se > m -> scarto PARZIALE e non vado avanti
+		* se = m -> controllo soluzione parziale (confronto con la soluzione già presente e se migliore la sovrascrivo)
+		
+APPROCCIO 2
+
+- LIVELLO DELLA RICORSIONE (L)
+	-> indica quale corso sto decidendo di mettere (o no) nella soluzione
+	
+	supponiamo di avere PARTENZA = {e1, e2, e3, ..., en}
+	L = 0 -> comsidero e1
+		* lo metto -> PARZIALE = {e1}
+			L = 1 -> considero e2
+				* lo metto -> PARZIALE = {e1, e2}
+				* non lo metto -> PARZIALE = {e1}
+		
+		* non lo metto -> PARZIALE = {}
+			L = 1 -> considero e2
+				* lo metto -> PARZIALE = {e2}
+				* non lo metto -> PARZIALE = {}
